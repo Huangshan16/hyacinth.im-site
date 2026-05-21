@@ -121,4 +121,6 @@ Built from a private source project using:
 
 Created by Ring Hyacinth / 海辛 as a 3D portfolio plaza for AI film, creative technology, and visual storytelling work.
 
+Background music: 《时空储蓄罐》.
+
 The public deploy repository is maintained as a readable showcase and stable static hosting target.
