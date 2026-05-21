@@ -39,6 +39,22 @@ Mobile can open the page, but the experience was designed first for desktop expl
 
 The site only loads video when a visitor opens a work detail or the circus cinema. The plaza itself uses lightweight posters and 3D models first, so the initial scene stays lighter.
 
+## Interaction Moments
+
+A few moments from the explorable plaza: Guide Nika's first greeting, a playable work detail page, and the circus cinema program.
+
+![Guide Nika dialog](docs/media/interaction-guide.png)
+
+Guide Nika introduces the world when the visitor walks near the shop.
+
+![Playable work detail modal](docs/media/interaction-work-detail.png)
+
+Poster boards open bilingual project pages with compressed web MP4 playback.
+
+![Circus cinema interaction](docs/media/interaction-cinema.png)
+
+The circus tent works like a small screening room with a randomized program list.
+
 ## Things To Find
 
 - Work boards: click a poster board to open a bilingual work page with video and project notes.
