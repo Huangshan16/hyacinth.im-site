@@ -24,9 +24,10 @@ Recommended:
 
 - Desktop Chrome / Edge / Safari
 - A reasonably recent laptop or desktop GPU
+- Recent mobile browsers with touch controls; landscape orientation is more comfortable
 - Sound on if you want the background music and video audio
 
-Mobile can open the page, but the experience was designed first for desktop exploration.
+Mobile is supported with a virtual joystick, short on-screen hints, and compact modal layouts for work pages, the cinema, radio links, and making notes.
 
 ## How To Play
 
@@ -38,7 +39,7 @@ Mobile can open the page, but the experience was designed first for desktop expl
 - Click nearby objects: open the same interactions directly
 - Mobile: use the left joystick to move, drag the scene to adjust view direction, and tap the interaction button when it appears
 
-The site only loads video when a visitor opens a work detail or the circus cinema. The plaza itself uses lightweight posters and 3D models first, so the initial scene stays lighter.
+The site only loads video when a visitor opens a work detail or the circus cinema. The plaza itself uses lightweight posters and 3D models first, and the large physics runtime is not preloaded from the initial HTML.
 
 ## Interaction Moments
 
@@ -59,11 +60,11 @@ The circus tent works like a small screening room with a randomized program list
 ## Things To Find
 
 - Work boards: click a poster board to open a bilingual work page with video and project notes.
-- Circus Cinema: open the tent to play a random available work from the program list.
+- Circus Cinema: open the tent to play a random available work from the program list; on mobile, the program becomes a horizontal card rail.
 - Collab Shop: leave a project note through a mailto flow.
-- Tiny Radio: browse podcast appearances.
-- Making Notes: open tutorial / behind-the-scenes links.
-- Guide Nika: talk to the little guide cat near the shop.
+- Tiny Radio: browse podcast appearances with compact mobile link cards.
+- Making Notes: open tutorial / behind-the-scenes links with compact mobile link cards.
+- Guide Nika: talk to the little guide cat near the shop and choose a short reply inside the dialog.
 - Social sculptures: open Twitter / X, Weibo, Jike, and Xiaohongshu links.
 - A-F memo sculptures: read small biographical fragments scattered around the plaza.
 
@@ -104,6 +105,10 @@ assets/videos-web/
 ```
 
 For a longer-term production setup, the same site can point to Cloudflare Stream, Mux, or an object-storage CDN by setting a video base URL during the source build.
+
+## Loading Strategy
+
+The built site keeps large libraries in separate vendor chunks so small UI updates do not invalidate every runtime file. The largest physics chunk remains available for the 3D scene, but it is not listed as an initial HTML `modulepreload`; this keeps mobile entry from competing with a 1 MB+ gzip physics download before the app starts.
 
 ## Repository Layout
 
