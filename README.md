@@ -36,6 +36,7 @@ Mobile can open the page, but the experience was designed first for desktop expl
 - `E`: interact with the nearest highlighted object
 - `1`: talk to Guide Nika when nearby
 - Click nearby objects: open the same interactions directly
+- Mobile: use the left joystick to move, drag the scene to adjust view direction, and tap the interaction button when it appears
 
 The site only loads video when a visitor opens a work detail or the circus cinema. The plaza itself uses lightweight posters and 3D models first, so the initial scene stays lighter.
 
