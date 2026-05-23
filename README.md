@@ -1,148 +1,58 @@
-# Ring Hyacinth 3D Portfolio Plaza
+<!--
+  [INPUT]: 依赖 index.html 的当前静态 Demo、docs/2026-05-23-我的月球-3d个人主页二创参赛项目-spec.md 的二创定位与数值交互文档
+  [OUTPUT]: 对外提供“我的月球”黑客松 Demo 的项目说明、本地预览方式、交互方式与文档导航
+  [POS]: 仓库根目录的对外说明入口，与 index.html 保持同构，说明当前仓库已从 3D 个人主页二创为参赛 Demo
+  [PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
+-->
+# 我的月球 | My Moon
 
-一个可探索的 3D 个人主页。访客会进入一座低多边形、绘本质感的作品广场，操纵一只披风小猫，在展板、马戏影院、合作小铺、小电台、制作手册、社交雕塑和关于我的碎片之间慢慢逛。
+一个从 3D 个人主页二创而来的黑客松参赛 Demo。
 
-Live site: [ringhyacinth.github.io/hyacinth.im-site](https://ringhyacinth.github.io/hyacinth.im-site/)
+当前版本保留原项目“可交互探索”的空间交互方式，但把作品广场改造成月球居住系统：用户操控 `榫结构居住舱`，靠近 `卯结构能源舱` 后通过 `frustrated magnetism / 磁挫锁` 稳定对接，手动确认并网，再观察能源下降时 AI 如何调度生命支持。
 
-![3D portfolio plaza overview](docs/media/homepage-overview.png)
+## 当前可玩闭环
 
-![Short plaza loop](docs/media/plaza-loop.gif)
+- `WASD` / 方向键移动居住舱
+- 靠近能源舱后按 `E` 或点击 `确认并网`
+- 并网后点击 `启动遮挡事件`
+- 观察太阳输入、发电功率、电池压力、生命支持和居住舱风险的联动
+- AI 会在 `warning` / `emergency` / `recovery` 模式下裁剪或恢复负载
 
-## What This Is
+## 核心设计
 
-This is the public deployment artifact for Ring Hyacinth's interactive 3D portfolio site.
+- `居住舱`：用户操控主体，立体脊骨三角外形，三个凸起榫接口
+- `能源舱`：固定能源节点，三个凹入卯接口
+- `磁挫锁`：对接稳定机制，同极之间形成稳定结构
+- `AI 协同层`：负责风险判断、负载裁剪、恢复顺序和解释文案
+- `数值系统`：太阳输入下降会传播到发电、储能、生命支持与风险
 
-The source project is a React + Vite + Three.js application. This public repository intentionally contains the built static files, optimized media, and a manual, so visitors can understand and open the project without exposing the private production workspace or original local assets.
+## 本地预览
 
-## How To Visit
-
-Open the live site:
-
-[https://ringhyacinth.github.io/hyacinth.im-site/](https://ringhyacinth.github.io/hyacinth.im-site/)
-
-Recommended:
-
-- Desktop Chrome / Edge / Safari
-- A reasonably recent laptop or desktop GPU
-- Recent mobile browsers with touch controls; landscape orientation is more comfortable
-- Sound on if you want the background music and video audio
-
-Mobile is supported with a virtual joystick, short on-screen hints, and compact modal layouts for work pages, the cinema, radio links, and making notes.
-
-## How To Play
-
-- `W` / `S`: move forward and backward
-- `A` / `D`: turn the cat
-- Mouse drag: adjust view direction
-- `E`: interact with the nearest highlighted object
-- `1`: talk to Guide Nika when nearby
-- Click nearby objects: open the same interactions directly
-- Mobile: use the left joystick to move, drag the scene to adjust view direction, and tap the interaction button when it appears
-
-The site only loads video when a visitor opens a work detail or the circus cinema. The plaza itself uses lightweight posters and 3D models first, and the large physics runtime is not preloaded from the initial HTML.
-
-## Interaction Moments
-
-A few moments from the explorable plaza: Guide Nika's first greeting, a playable work detail page, and the circus cinema program.
-
-![Guide Nika dialog](docs/media/interaction-guide.png)
-
-Guide Nika introduces the world when the visitor walks near the shop.
-
-![Playable work detail modal](docs/media/interaction-work-detail.png)
-
-Poster boards open bilingual project pages with compressed web MP4 playback.
-
-![Circus cinema interaction](docs/media/interaction-cinema.png)
-
-The circus tent works like a small screening room with a randomized program list.
-
-## Things To Find
-
-- Work boards: click a poster board to open a bilingual work page with video and project notes.
-- Circus Cinema: open the tent to play a random available work from the program list; on mobile, the program becomes a horizontal card rail.
-- Collab Shop: leave a project note through a mailto flow.
-- Tiny Radio: browse podcast appearances with compact mobile link cards.
-- Making Notes: open tutorial / behind-the-scenes links with compact mobile link cards.
-- Guide Nika: talk to the little guide cat near the shop and choose a short reply inside the dialog.
-- Social sculptures: open Twitter / X, Weibo, Jike, and Xiaohongshu links.
-- A-F memo sculptures: read small biographical fragments scattered around the plaza.
-
-## Works In The Plaza
-
-The 3D boards use lightweight WebP posters. Available works use compressed web MP4 videos; one touring work remains poster-only.
-
-![Portfolio work poster wall](docs/media/poster-wall.png)
-
-Included works:
-
-- Palace Cats Clock In
-- A Civilized Kitten Tours Pudong
-- The Cat from the Louvre
-- Swallows Before the Old Halls
-- Beyond the Frame
-- Pudong, You Are a Cup of Coffee
-- Meow: Can a Magic Assistant Go Viral?
-- Down the Qiantan Rabbit Hole
-- Twelve Hours in Wuhan
-- When Masterpieces Audition
-- Super Sketch Show 2026 National Tour
-
-## Video Strategy
-
-The original local videos are much larger than a static site should ship directly. For the public demo, the videos were transcoded into web playback copies:
-
-- 720p
-- H.264 video
-- AAC audio
-- MP4 `faststart`
-- Around 121 MB total for 10 playable videos
-
-This repository includes only the web playback versions under:
-
-```text
-assets/videos-web/
+```bash
+cd /Volumes/SSD/code/hyacinth.im-site
+python3 -m http.server 4173 --bind 127.0.0.1
 ```
 
-For a longer-term production setup, the same site can point to Cloudflare Stream, Mux, or an object-storage CDN by setting a video base URL during the source build.
-
-## Loading Strategy
-
-The built site keeps large libraries in separate vendor chunks so small UI updates do not invalidate every runtime file. The largest physics chunk remains available for the 3D scene, but it is not listed as an initial HTML `modulepreload`; this keeps mobile entry from competing with a 1 MB+ gzip physics download before the app starts.
-
-## Repository Layout
+打开：
 
 ```text
-.
-├─ index.html
-├─ assets/
-│  ├─ audio/          # Background music
-│  ├─ models/         # GLB characters, landmarks, environment sprites
-│  ├─ posters/        # Lightweight WebP board posters
-│  ├─ textures/       # WebP ground / carpet textures
-│  └─ videos-web/     # Public web playback MP4 files
-└─ docs/
-   └─ media/          # README screenshots and GIF
+http://127.0.0.1:4173/
 ```
 
-## Tech Stack
+## 文档导航
 
-Built from a private source project using:
+- [二创参赛项目 Spec](docs/2026-05-23-我的月球-3d个人主页二创参赛项目-spec.md)
+- [数值交互 Spec](docs/2026-05-23-我的月球-demo-数值交互-spec.md)
+- [运行细节说明](docs/2026-05-23-我的月球-demo-运行细节说明.md)
+- [结构补充](docs/结构补充.md)
 
-- React
-- Vite
-- TypeScript
-- Three.js
-- `@react-three/fiber`
-- `@react-three/drei`
-- `@react-three/rapier`
-- Framer Motion
-- Tailwind CSS
+## 仓库定位
 
-## Credits
+这是静态部署仓库。当前主入口是 `index.html`，样式和状态机分别位于：
 
-Created by Ring Hyacinth / 海辛 as a 3D portfolio plaza for AI film, creative technology, and visual storytelling work.
+```text
+assets/my-moon-demo.css
+assets/my-moon-demo.js
+```
 
-Background music: 时空储蓄罐《Deposit》.
-
-The public deploy repository is maintained as a readable showcase and stable static hosting target.
+原 3D 个人主页的打包产物仍保留在 `assets/` 中，作为历史产物和后续素材替换来源。
