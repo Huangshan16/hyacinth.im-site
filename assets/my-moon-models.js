@@ -1,31 +1,17 @@
 /*
-  [INPUT]: 依赖 index.html 中的 #sceneCanvas，依赖 assets/models/landmarks/*.glb 现有素材作为控制台、回放舱与节点占位
+  [INPUT]: 依赖 index.html 中的 #sceneCanvas，依赖 assets/three 的 Three.js/GLTFLoader，依赖 assets/models/landmarks/*.glb 现有素材作为控制台、回放舱与节点占位
   [OUTPUT]: 对外提供透明 3D 占位层，在当前静态 Demo 上叠加现有 GLB 资产的可视化存在
   [POS]: assets 层的轻量 3D 素材适配器，不接管主交互，只负责把仓库现有模型拉进“我的月球”场景
   [PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
 */
+import * as THREE from "./three/three.module.js";
+import { GLTFLoader } from "./three/GLTFLoader.js";
+
 const canvas = document.getElementById("sceneCanvas");
 const modelStatusTarget = document.getElementById("aiCopy");
 
 async function bootModelLayer() {
   if (!canvas) return;
-
-  let THREE;
-  let GLTFLoader;
-
-  try {
-    const threeModule = await import("https://unpkg.com/three@0.165.0/build/three.module.js");
-    const loaderModule = await import("https://unpkg.com/three@0.165.0/examples/jsm/loaders/GLTFLoader.js");
-    THREE = threeModule;
-    GLTFLoader = loaderModule.GLTFLoader;
-  } catch (_error) {
-    // 网络依赖不可用时静默降级，保留 DOM 灰盒与数值闭环。
-    document.body.dataset.modelLayer = "import-error";
-    if (modelStatusTarget) {
-      modelStatusTarget.textContent = "3D 素材层加载失败，当前退回 DOM 灰盒场景。";
-    }
-    return;
-  }
 
   document.body.dataset.modelLayer = "booting";
 

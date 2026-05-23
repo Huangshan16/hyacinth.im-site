@@ -3,7 +3,7 @@
 > L1 | 公开部署仓库，承载 Ring Hyacinth 3D 作品广场的静态发布产物与最小使用说明。
 
 <directory>
-./assets/ - 静态 Demo 样式/脚本、轻量 3D 适配层、历史构建产物与媒体资源（7类成员: `my-moon-demo.*`、`my-moon-models.js`、vendor chunks、`audio`、`models`、`posters`、`textures`、`videos-web`）
+./assets/ - 静态 Demo 样式/脚本、轻量 3D 适配层、本地 Three.js 运行时、历史构建产物与媒体资源（8类成员: `my-moon-demo.*`、`my-moon-models.js`、vendor chunks、`audio`、`models`、`three`、`posters`、`textures`、`videos-web`）
 ./docs/ - 面向仓库读者的说明、决策记录与配图素材（3类成员: `*.md`、`image`、`media`）
 </directory>
 
@@ -28,6 +28,7 @@ README.md - 项目说明书，解释“我的月球”Demo 定位、交互方式
 │  ├─ my-moon-models.js
 │  ├─ audio/
 │  ├─ models/
+│  ├─ three/
 │  ├─ posters/
 │  ├─ textures/
 │  └─ videos-web/
@@ -65,3 +66,4 @@ README.md - 项目说明书，解释“我的月球”Demo 定位、交互方式
 - 2026-05-23: 更新结构规则为居住舱榫结构、能源舱卯结构，并采用 frustrated magnetism 磁挫锁作为稳定对接机制。
 - 2026-05-23: 将 `index.html` 二创为“我的月球”静态交互 Demo，并拆分 `assets/my-moon-demo.css` 与 `assets/my-moon-demo.js` 承载样式和状态机。
 - 2026-05-23: 新增 `assets/my-moon-models.js`，在透明画布上接入现有 `landmarks/*.glb` 作为控制台、回放舱与子系统节点占位。
+- 2026-05-23: 新增 `assets/three/` 本地 Three.js 运行时，移除 3D 素材层对 `unpkg` 的运行时依赖。
