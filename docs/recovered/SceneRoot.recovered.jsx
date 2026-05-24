@@ -16,6 +16,11 @@ const aliasMap = {
   Je: "CenterGroundTexture",
   Xe: "GroundTilePatches",
   ie: "BackdropGroundRing",
+  Ae: "DisabledPlayerCartBase",
+  Be: "CircusTentLandmark",
+  Te: "PlayerModel",
+  xe: "DisabledGrassField",
+  ke: "PlayerController",
   lt: "SceneRoot",
 };
 
@@ -89,10 +94,48 @@ function SceneRoot(props) {
           <WorksRing {...props} />
           <SocialNodes {...props} />
           <BackdropGroundRing />
-          <GrassField playerPositionRef={props.playerPositionRef} />
+          <DisabledGrassField playerPositionRef={props.playerPositionRef} />
         </Physics>
         <OrbitControls enabled={false} />
       </Suspense>
     </Canvas>
   );
+}
+
+function PlayerController({ mobileInputRef, onMove, playerPositionRef }) {
+  return (
+    <RigidBody canSleep={false} colliders={false} enabledRotations={[false, false, false]}>
+      <CapsuleCollider args={[0.4, 0.3]} position={[0, 0.5, 0]} />
+      <group position={[0, -0.3, 0]}>
+        <PlayerModel movementDirectionRef={null} movementIntensityRef={null} rotation={[0, Math.PI / 2, 0]} scale={1.75} />
+      </group>
+    </RigidBody>
+  );
+}
+
+function DisabledPlayerCartBase() {
+  // 原 `Ae()` 是黄色小车底座；当前用户操控主体只保留 GLB 模型本体，不再挂载该底座。
+  return null;
+}
+
+function CircusTentLandmark({ active, onInteract }) {
+  return (
+    <RigidBody type="fixed" colliders={false} position={[0, 0, -3.8]}>
+      <CylinderCollider args={[1.75, 3.55]} position={[0, 1.75, 0]} />
+      <TargetRing active={active} radius={4.2} />
+      <group onPointerDown={onInteract}>
+        <HighlightableModel
+          path="/assets/models/landmarks/circus-tent.glb"
+          rotation={[0, Math.PI + Math.PI / 2, 0]}
+          scale={15}
+        />
+      </group>
+      {/* 原构建产物在这里额外插入红色 cone 旗帜与 cylinder 旗杆；当前已移除。 */}
+    </RigidBody>
+  );
+}
+
+function DisabledGrassField() {
+  // 原 `xe()` 会挂载程序化草叶、花和麦穗；月面场景下已整体禁用。
+  return null;
 }
