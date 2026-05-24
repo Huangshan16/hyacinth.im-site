@@ -1,7 +1,7 @@
 <!--
-  [INPUT]: 依赖 docs/2026-05-23-我的月球-3d个人主页二创参赛项目-spec.md 的二创交互规则，依赖 docs/2026-05-23-我的月球-demo-数值交互-spec.md 的数值传播公式
-  [OUTPUT]: 对外提供“我的月球”黑客松静态交互 Demo，包含居住舱操控、能源舱磁挫锁对接、手动并网、AI 调度与数值 HUD
-  [POS]: 仓库根目录的运行入口文件，替代原 3D 个人主页入口，承载当前参赛 Demo 的最小可玩闭环
+  [INPUT]: 依赖 assets/index-Coy5B0kA.css 与 assets/index-BezMjCv7.js 提供原 3D 个人主页前端，依赖 docs/2026-05-23-我的月球-3d个人主页二创参赛项目-spec.md 的“原前端为主体 + AI 系统叠加”方向
+  [OUTPUT]: 对外提供原 3D 互动广场作为主体页面，并叠加“我的月球”AI 系统监控与调度覆盖层
+  [POS]: 仓库根目录运行入口，负责启动历史 bundle 并挂接当前黑客松 AI 系统前端
   [PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
 -->
 <!doctype html>
@@ -11,130 +11,100 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="我的月球：操控榫结构居住舱接入卯结构能源舱，在能源下降时观察 AI 如何调度生命支持。"
+      content="我的月球：沿用原有 3D 可交互前端，并叠加 AI 生命支持调度系统。"
     />
-    <title>我的月球 | AI-Native Lunar Habitat Demo</title>
-    <link rel="stylesheet" href="./assets/my-moon-demo.css" />
+    <title>我的月球 | AI System on Ring Hyacinth</title>
+    <link rel="stylesheet" href="./assets/index-Coy5B0kA.css" />
+    <link rel="stylesheet" href="./assets/my-moon-overlay.css" />
   </head>
-  <body data-mode="normal">
-    <main class="app" aria-label="我的月球交互 Demo">
-      <section class="scene" aria-label="月球居住核心区">
-        <canvas class="scene-canvas" id="sceneCanvas" aria-hidden="true"></canvas>
-        <div class="skyline"></div>
-        <img class="horizon mountain-left" src="./assets/models/environment/mountain.png" alt="" />
-        <img class="horizon mountain-right" src="./assets/models/environment/mountain.png" alt="" />
-        <img class="cloud cloud-a" src="./assets/models/environment/cloud2.png" alt="" />
-        <img class="cloud cloud-b" src="./assets/models/environment/cloud4.png" alt="" />
-        <img class="cloud cloud-c" src="./assets/models/environment/cloud6.png" alt="" />
-        <div class="moon-floor" id="floor">
-          <div class="orbit-ring"></div>
-          <div class="beam" id="beam"></div>
-          <div class="mag-lock" id="magLock"></div>
+  <body>
+    <div id="root"></div>
 
-          <article class="module energy-cabin" id="energyCabin" aria-label="卯结构能源舱">
-            <div class="tri-core"></div>
-            <div class="ridge"></div>
-            <span class="foot foot-a"></span>
-            <span class="foot foot-b"></span>
-            <span class="foot foot-c"></span>
-            <span class="mortise port-top"></span>
-            <span class="mortise port-left"></span>
-            <span class="mortise port-right"></span>
+    <section class="moon-ai-shell" aria-label="我的月球 AI 系统">
+      <button class="moon-ai-launcher" id="moonAiLauncher" type="button" aria-expanded="true">
+        AI SYSTEM
+      </button>
+
+      <div class="moon-ai-dashboard" id="moonAiDashboard">
+        <aside class="moon-ai-panel moon-ai-summary" aria-label="系统总览">
+          <div class="moon-ai-kicker">My Moon</div>
+          <h1>我的月球</h1>
+          <p class="moon-ai-lead" id="moonAiLead">
+            原有 3D 场景保持可交互探索，AI 系统负责生命支持调度演示。
+          </p>
+
+          <div class="moon-ai-metrics">
+            <article class="moon-ai-metric">
+              <span>系统模式</span>
+              <strong id="modeText">normal</strong>
+              <div class="moon-ai-bar"><i id="modeBar"></i></div>
+            </article>
+            <article class="moon-ai-metric">
+              <span>太阳输入</span>
+              <strong id="solarText">100%</strong>
+              <div class="moon-ai-bar"><i id="solarBar"></i></div>
+            </article>
+            <article class="moon-ai-metric">
+              <span>储能余量</span>
+              <strong id="batteryText">72%</strong>
+              <div class="moon-ai-bar"><i id="batteryBar"></i></div>
+            </article>
+            <article class="moon-ai-metric">
+              <span>生命支持</span>
+              <strong id="lifeText">100%</strong>
+              <div class="moon-ai-bar"><i id="lifeBar"></i></div>
+            </article>
+          </div>
+        </aside>
+
+        <aside class="moon-ai-panel moon-ai-control" aria-label="AI 协同层">
+          <div class="moon-ai-header">
+            <div>
+              <span class="moon-ai-label">AI 协同层</span>
+              <strong id="dockText">未并网</strong>
+            </div>
+            <span class="moon-ai-chip" id="scenarioText">巡检待命</span>
+          </div>
+
+          <p class="moon-ai-copy" id="aiCopy">
+            保留原广场交互作为空间主体；AI 系统独立演示能源接入与生命支持调度。
+          </p>
+
+          <div class="moon-ai-actions">
+            <button id="dockButton" type="button">接入能源舱</button>
+            <button id="eventButton" type="button" disabled>启动遮挡事件</button>
+            <button id="doorButton" type="button" disabled>打开双门</button>
+            <button id="resetButton" type="button">恢复稳定</button>
+          </div>
+
+          <div class="moon-ai-log">
+            <div class="moon-ai-log-title">系统播报</div>
+            <ul id="moonAiLog"></ul>
+          </div>
+        </aside>
+
+        <aside class="moon-ai-strip" aria-label="传播链">
+          <article>
+            <span>发电功率</span>
+            <strong id="generationText">80.0 EU/s</strong>
           </article>
-
-          <article class="module habitat-cabin" id="habitatCabin" aria-label="榫结构居住舱">
-            <div class="tri-core"></div>
-            <div class="ridge"></div>
-            <span class="foot foot-a"></span>
-            <span class="foot foot-b"></span>
-            <span class="foot foot-c"></span>
-            <span class="tenon port-top"></span>
-            <span class="tenon port-left"></span>
-            <span class="tenon port-right"></span>
+          <article>
+            <span>电池压力</span>
+            <strong id="stressText">8%</strong>
           </article>
+          <article>
+            <span>当前负载</span>
+            <strong id="demandText">90 EU/s</strong>
+          </article>
+          <article>
+            <span>居住舱风险</span>
+            <strong id="riskText">18%</strong>
+          </article>
+        </aside>
+      </div>
+    </section>
 
-          <button class="node" id="oxygenNode" data-label="氧气循环" style="--x: -48px; --y: -184px; --node-color: #84d6a5"></button>
-          <button class="node" id="pressureNode" data-label="舱压维持" style="--x: -172px; --y: 18px; --node-color: #7eb6ff"></button>
-          <button class="node" id="thermalNode" data-label="基础温控" style="--x: 64px; --y: 122px; --node-color: #ffbe55"></button>
-          <button class="node" id="waterNode" data-label="水循环" style="--x: 286px; --y: 92px; --node-color: #77e3df"></button>
-        </div>
-      </section>
-
-      <aside class="panel hud" aria-label="系统状态">
-        <h1>我的月球</h1>
-        <p class="subtitle">操控榫结构居住舱接入卯结构能源舱；能源波动时，AI 会裁剪非关键负载，优先保护生命支持。</p>
-        <div class="metric-grid">
-          <div class="metric">
-            <span>系统模式</span>
-            <strong id="modeText">normal</strong>
-            <div class="bar"><i id="modeBar"></i></div>
-          </div>
-          <div class="metric">
-            <span>太阳输入</span>
-            <strong id="solarText">100%</strong>
-            <div class="bar"><i id="solarBar"></i></div>
-          </div>
-          <div class="metric">
-            <span>储能余量</span>
-            <strong id="batteryText">72%</strong>
-            <div class="bar"><i id="batteryBar"></i></div>
-          </div>
-          <div class="metric">
-            <span>生命支持</span>
-            <strong id="lifeText">100%</strong>
-            <div class="bar"><i id="lifeBar"></i></div>
-          </div>
-        </div>
-      </aside>
-
-      <aside class="panel console" aria-label="AI 协同控制台">
-        <div class="console-header">
-          <div class="console-identity">
-            <img class="ai-avatar" src="./assets/models/characters/booth-cat-profile.webp" alt="" />
-            <strong>AI 协同层</strong>
-          </div>
-          <span class="mode-pill" id="dockText">未并网</span>
-        </div>
-        <p class="ai-copy" id="aiCopy">移动居住舱靠近能源舱凹入接口。进入磁挫锁范围后，确认并网才会接入能源。</p>
-        <div class="actions">
-          <button id="dockButton" type="button" disabled>确认并网</button>
-          <button id="eventButton" type="button" disabled>启动遮挡事件</button>
-          <button id="resetButton" type="button">重置系统</button>
-          <button id="doorButton" type="button" disabled>打开双门</button>
-          <button id="audioButton" type="button">播放环境音</button>
-        </div>
-      </aside>
-
-      <aside class="panel status-strip" aria-label="传播链">
-        <div class="strip-item">
-          <span>发电功率</span>
-          <strong id="generationText">80 EU/s</strong>
-        </div>
-        <div class="strip-item">
-          <span>电池压力</span>
-          <strong id="stressText">8%</strong>
-        </div>
-        <div class="strip-item">
-          <span>当前负载</span>
-          <strong id="demandText">90 EU/s</strong>
-        </div>
-        <div class="strip-item">
-          <span>居住舱风险</span>
-          <strong id="riskText">6%</strong>
-        </div>
-      </aside>
-
-      <p class="help">WASD / 方向键移动居住舱；靠近能源舱后按 E 确认并网；并网后启动遮挡事件。</p>
-
-      <nav class="mobile-pad" aria-label="移动端方向控制">
-        <button class="up" data-pad="up" type="button">↑</button>
-        <button class="left" data-pad="left" type="button">←</button>
-        <button class="right" data-pad="right" type="button">→</button>
-        <button class="down" data-pad="down" type="button">↓</button>
-      </nav>
-    </main>
-
-    <script type="module" src="./assets/my-moon-models.js?v=20260523-local-three"></script>
-    <script src="./assets/my-moon-demo.js"></script>
+    <script type="module" src="./assets/index-BezMjCv7.js"></script>
+    <script src="./assets/my-moon-overlay.js"></script>
   </body>
 </html>

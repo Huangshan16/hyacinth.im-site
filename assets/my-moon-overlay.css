@@ -1,0 +1,307 @@
+/*
+  [INPUT]: 依赖 index.html 中的 moon-ai-* DOM 结构，依赖原 3D 作品广场样式作为页面主体背景
+  [OUTPUT]: 对外提供“我的月球”AI 系统覆盖层的布局、色彩、控件与响应式样式
+  [POS]: assets 层的 AI 系统前端样式，与历史 bundle 并存，不接管原场景渲染
+  [PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
+*/
+:root {
+  --moon-panel: rgba(11, 16, 17, 0.84);
+  --moon-panel-soft: rgba(18, 24, 26, 0.72);
+  --moon-line: rgba(230, 242, 230, 0.15);
+  --moon-ink: #f4f1e8;
+  --moon-muted: #aab2a1;
+  --moon-green: #89d8a8;
+  --moon-blue: #87b8ff;
+  --moon-amber: #f8bc58;
+  --moon-red: #ff7665;
+}
+
+.moon-ai-shell {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  font-family: "Avenir Next", "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+.moon-ai-launcher,
+.moon-ai-dashboard button {
+  border: 1px solid var(--moon-line);
+  background: rgba(245, 247, 236, 0.08);
+  color: var(--moon-ink);
+  cursor: pointer;
+}
+
+.moon-ai-launcher {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  z-index: 42;
+  pointer-events: auto;
+  padding: 10px 14px;
+  letter-spacing: 0.18em;
+  font-size: 12px;
+  font-weight: 800;
+  backdrop-filter: blur(14px);
+}
+
+.moon-ai-dashboard {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: minmax(300px, 360px) minmax(300px, 360px);
+  grid-template-rows: auto 1fr auto;
+  gap: 18px;
+  padding: 70px 18px 18px;
+  align-content: start;
+}
+
+.moon-ai-dashboard.is-collapsed {
+  display: none;
+}
+
+.moon-ai-panel,
+.moon-ai-strip {
+  pointer-events: auto;
+  border: 1px solid var(--moon-line);
+  background: var(--moon-panel);
+  backdrop-filter: blur(16px);
+  color: var(--moon-ink);
+}
+
+.moon-ai-panel {
+  padding: 18px;
+}
+
+.moon-ai-summary {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+}
+
+.moon-ai-control {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+}
+
+.moon-ai-kicker {
+  color: var(--moon-muted);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.moon-ai-summary h1 {
+  margin: 8px 0 10px;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  line-height: 0.95;
+  font-weight: 800;
+}
+
+.moon-ai-lead,
+.moon-ai-copy {
+  margin: 0;
+  color: var(--moon-muted);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.moon-ai-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.moon-ai-metric {
+  border: 1px solid var(--moon-line);
+  background: var(--moon-panel-soft);
+  padding: 14px;
+}
+
+.moon-ai-metric span,
+.moon-ai-strip span,
+.moon-ai-log-title,
+.moon-ai-label {
+  color: var(--moon-muted);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.moon-ai-metric strong {
+  display: block;
+  margin-top: 10px;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.moon-ai-bar {
+  margin-top: 16px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.moon-ai-bar i {
+  display: block;
+  width: var(--value, 0%);
+  height: 100%;
+  background: var(--bar-color, var(--moon-green));
+  transition: width 180ms ease;
+}
+
+.moon-ai-header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.moon-ai-header strong {
+  display: block;
+  margin-top: 6px;
+  font-size: 26px;
+  line-height: 1;
+}
+
+.moon-ai-chip {
+  border: 1px solid var(--moon-line);
+  padding: 8px 10px;
+  font-size: 12px;
+  color: var(--moon-green);
+}
+
+.moon-ai-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.moon-ai-actions button {
+  min-height: 54px;
+  padding: 12px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.moon-ai-actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.moon-ai-log {
+  margin-top: 18px;
+  border-top: 1px solid var(--moon-line);
+  padding-top: 14px;
+}
+
+.moon-ai-log ul {
+  display: grid;
+  gap: 10px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.moon-ai-log li {
+  color: var(--moon-ink);
+  background: rgba(255, 255, 255, 0.04);
+  border-left: 2px solid var(--moon-line);
+  padding: 10px 12px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.moon-ai-strip {
+  grid-column: 1 / span 2;
+  grid-row: 3;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.moon-ai-strip article {
+  padding: 16px 18px;
+  border-right: 1px solid var(--moon-line);
+}
+
+.moon-ai-strip article:last-child {
+  border-right: 0;
+}
+
+.moon-ai-strip strong {
+  display: block;
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+body[data-mode="warning"] .moon-ai-chip,
+body[data-mode="warning"] .moon-ai-bar i {
+  color: var(--moon-amber);
+  background: var(--moon-amber);
+}
+
+body[data-mode="emergency"] .moon-ai-chip,
+body[data-mode="emergency"] .moon-ai-bar i {
+  color: var(--moon-red);
+  background: var(--moon-red);
+}
+
+body[data-mode="recovery"] .moon-ai-chip,
+body[data-mode="recovery"] .moon-ai-bar i {
+  color: var(--moon-blue);
+  background: var(--moon-blue);
+}
+
+@media (max-width: 1100px) {
+  .moon-ai-dashboard {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+  }
+
+  .moon-ai-summary,
+  .moon-ai-control,
+  .moon-ai-strip {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .moon-ai-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .moon-ai-dashboard {
+    gap: 12px;
+    padding: 60px 10px 10px;
+  }
+
+  .moon-ai-panel {
+    padding: 14px;
+  }
+
+  .moon-ai-metrics,
+  .moon-ai-actions,
+  .moon-ai-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .moon-ai-summary h1 {
+    font-size: 2.2rem;
+  }
+
+  .moon-ai-header strong {
+    font-size: 22px;
+  }
+
+  .moon-ai-strip article {
+    border-right: 0;
+    border-top: 1px solid var(--moon-line);
+  }
+
+  .moon-ai-strip article:first-child {
+    border-top: 0;
+  }
+}

@@ -3,12 +3,12 @@
 > L1 | 公开部署仓库，承载 Ring Hyacinth 3D 作品广场的静态发布产物与最小使用说明。
 
 <directory>
-./assets/ - 静态 Demo 样式/脚本、轻量 3D 适配层、本地 Three.js 运行时、历史构建产物与媒体资源（8类成员: `my-moon-demo.*`、`my-moon-models.js`、vendor chunks、`audio`、`models`、`three`、`posters`、`textures`、`videos-web`）
+./assets/ - 原 3D 前端 bundle、“我的月球”AI 覆盖层、历史灰盒方案与媒体资源（9类成员: `index-*`、`SceneRoot-*`、`my-moon-overlay.*`、`my-moon-demo.*`、`my-moon-models.js`、vendor chunks、`audio`、`models`、`three`、`posters`、`textures`、`videos-web`）
 ./docs/ - 面向仓库读者的说明、决策记录与配图素材（3类成员: `*.md`、`image`、`media`）
 </directory>
 
 <config>
-index.html - 站点入口 HTML，承载“我的月球”二创 Demo 的 DOM 结构，并引用 `assets/my-moon-demo.*` 与 `assets/my-moon-models.js`
+index.html - 站点入口 HTML，启动原 3D 作品广场 bundle，并叠加 `assets/my-moon-overlay.*` 作为 AI 系统前端
 README.md - 项目说明书，解释“我的月球”Demo 定位、交互方式、本地预览与文档导航
 .nojekyll - 告知 GitHub Pages 按原样发布静态资源
 </config>
@@ -23,6 +23,8 @@ README.md - 项目说明书，解释“我的月球”Demo 定位、交互方式
 ├─ .nojekyll
 ├─ assets/
 │  ├─ AGENTS.md
+│  ├─ my-moon-overlay.css
+│  ├─ my-moon-overlay.js
 │  ├─ my-moon-demo.css
 │  ├─ my-moon-demo.js
 │  ├─ my-moon-models.js
@@ -67,3 +69,4 @@ README.md - 项目说明书，解释“我的月球”Demo 定位、交互方式
 - 2026-05-23: 将 `index.html` 二创为“我的月球”静态交互 Demo，并拆分 `assets/my-moon-demo.css` 与 `assets/my-moon-demo.js` 承载样式和状态机。
 - 2026-05-23: 新增 `assets/my-moon-models.js`，在透明画布上接入现有 `landmarks/*.glb` 作为控制台、回放舱与子系统节点占位。
 - 2026-05-23: 新增 `assets/three/` 本地 Three.js 运行时，移除 3D 素材层对 `unpkg` 的运行时依赖。
+- 2026-05-23: 入口重新切回原 3D 前端 bundle，并新增 `assets/my-moon-overlay.*` 作为“我的月球”AI 系统覆盖层。
