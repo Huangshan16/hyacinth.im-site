@@ -52,8 +52,9 @@ http://127.0.0.1:4173/
 ```text
 assets/index-Coy5B0kA.css
 assets/index-BezMjCv7.js
+assets/textures/plaza-ground.png
 assets/my-moon-overlay.css
 assets/my-moon-overlay.js
 ```
 
-灰盒月面方案仍保留在 `assets/my-moon-demo.*` 与 `assets/my-moon-models.js`，作为历史实现和后续对照来源。
+`assets/textures/plaza-ground.png` 已被原 3D 场景 chunk 的可见地表层直接加载为底部主地表纹理；对应恢复说明见 `docs/recovered/SceneRoot.recovered.jsx`。灰盒月面方案仍保留在 `assets/my-moon-demo.*` 与 `assets/my-moon-models.js`，作为历史实现和后续对照来源。

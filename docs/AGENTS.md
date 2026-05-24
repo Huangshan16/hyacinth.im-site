@@ -12,6 +12,8 @@
 chatlog.md: 会话记录草稿文件，保留原始过程性信息，不作为当前需求真相源，[PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
 image/: 讨论截图与辅助图片目录，服务文档叙事与视觉对照，[PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
 media/: README 配图与演示动图目录，对外说明素材，[PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
+daily/: 开发记忆入口目录，按日期记录关键决策、进展、验证与可晋升经验，[PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
+recovered/: 构建产物反整理目录，记录无法精确还原源码时人工恢复出的组件语义与补丁定位，[PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
 
 法则: 成员完整·一行一文件·父级链接·技术词前置
 

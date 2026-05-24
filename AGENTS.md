@@ -3,8 +3,8 @@
 > L1 | 公开部署仓库，承载 Ring Hyacinth 3D 作品广场的静态发布产物与最小使用说明。
 
 <directory>
-./assets/ - 原 3D 前端 bundle、“我的月球”AI 覆盖层、历史灰盒方案与媒体资源（9类成员: `index-*`、`SceneRoot-*`、`my-moon-overlay.*`、`my-moon-demo.*`、`my-moon-models.js`、vendor chunks、`audio`、`models`、`three`、`posters`、`textures`、`videos-web`）
-./docs/ - 面向仓库读者的说明、决策记录与配图素材（3类成员: `*.md`、`image`、`media`）
+./assets/ - 原 3D 前端 bundle、“我的月球”AI 覆盖层、当前月面地表纹理、历史灰盒方案与媒体资源（9类成员: `index-*`、`SceneRoot-*`、`my-moon-overlay.*`、`my-moon-demo.*`、`my-moon-models.js`、vendor chunks、`audio`、`models`、`three`、`posters`、`textures`、`videos-web`）
+./docs/ - 面向仓库读者的说明、决策记录、开发记忆、构建产物反整理与配图素材（5类成员: `*.md`、`daily`、`recovered`、`image`、`media`）
 </directory>
 
 <config>
@@ -43,6 +43,8 @@ README.md - 项目说明书，解释“我的月球”Demo 定位、交互方式
    ├─ 260517-青年元创计划48h黑客松·AI-Native SE 最小闭环（ChatGPT对话）.md
    ├─ 结构补充.md
    ├─ chatlog.md
+   ├─ daily/
+   ├─ recovered/
    ├─ image/
    └─ media/
 ```
@@ -70,3 +72,5 @@ README.md - 项目说明书，解释“我的月球”Demo 定位、交互方式
 - 2026-05-23: 新增 `assets/my-moon-models.js`，在透明画布上接入现有 `landmarks/*.glb` 作为控制台、回放舱与子系统节点占位。
 - 2026-05-23: 新增 `assets/three/` 本地 Three.js 运行时，移除 3D 素材层对 `unpkg` 的运行时依赖。
 - 2026-05-23: 入口重新切回原 3D 前端 bundle，并新增 `assets/my-moon-overlay.*` 作为“我的月球”AI 系统覆盖层。
+- 2026-05-24: 将原 3D 场景主地表直接接入 `assets/textures/plaza-ground.png`，避免外部地形覆盖层穿模。
+- 2026-05-24: 新增 `docs/recovered/SceneRoot.recovered.jsx`，记录从压缩场景 chunk 恢复出的地表组件骨架与真实补丁点。
