@@ -18,7 +18,40 @@ const defaultLighting = {
     lightDistance: 30,
     lightPosition: [0, 3.2, 0.8],
   },
-  small: {
+  medical: {
+    brightness: 1,
+    scale: 1,
+    surfaceGlow: 0,
+    activeGlow: 0,
+    glowColor: "#7d93c7",
+    lightColor: "#8ea2ff",
+    lightIntensity: 1.2,
+    lightDistance: 6,
+    lightPosition: [0, 0.72, 0.12],
+  },
+  communication: {
+    brightness: 1,
+    scale: 1,
+    surfaceGlow: 0,
+    activeGlow: 0,
+    glowColor: "#7d93c7",
+    lightColor: "#8ea2ff",
+    lightIntensity: 1.2,
+    lightDistance: 6,
+    lightPosition: [0, 0.72, 0.12],
+  },
+  research: {
+    brightness: 1,
+    scale: 1,
+    surfaceGlow: 0,
+    activeGlow: 0,
+    glowColor: "#7d93c7",
+    lightColor: "#8ea2ff",
+    lightIntensity: 1.2,
+    lightDistance: 6,
+    lightPosition: [0, 0.72, 0.12],
+  },
+  energy: {
     brightness: 1,
     scale: 1,
     surfaceGlow: 0,
@@ -157,36 +190,41 @@ const el = {
       brightness: document.getElementById("moonLightingCenterpieceBrightness"),
       brightnessValue: document.getElementById("moonLightingCenterpieceBrightnessValue"),
       color: document.getElementById("moonLightingCenterpieceColor"),
-      scale: document.getElementById("moonLightingCenterpieceScale"),
-      scaleValue: document.getElementById("moonLightingCenterpieceScaleValue"),
     },
-    small: {
-      brightness: document.getElementById("moonLightingSmallBrightness"),
-      brightnessValue: document.getElementById("moonLightingSmallBrightnessValue"),
-      color: document.getElementById("moonLightingSmallColor"),
-      scale: document.getElementById("moonLightingSmallScale"),
-      scaleValue: document.getElementById("moonLightingSmallScaleValue"),
+    medical: {
+      brightness: document.getElementById("moonLightingMedicalBrightness"),
+      brightnessValue: document.getElementById("moonLightingMedicalBrightnessValue"),
+      color: document.getElementById("moonLightingMedicalColor"),
+    },
+    communication: {
+      brightness: document.getElementById("moonLightingCommunicationBrightness"),
+      brightnessValue: document.getElementById("moonLightingCommunicationBrightnessValue"),
+      color: document.getElementById("moonLightingCommunicationColor"),
+    },
+    research: {
+      brightness: document.getElementById("moonLightingResearchBrightness"),
+      brightnessValue: document.getElementById("moonLightingResearchBrightnessValue"),
+      color: document.getElementById("moonLightingResearchColor"),
+    },
+    energy: {
+      brightness: document.getElementById("moonLightingEnergyBrightness"),
+      brightnessValue: document.getElementById("moonLightingEnergyBrightnessValue"),
+      color: document.getElementById("moonLightingEnergyColor"),
     },
     shop: {
       brightness: document.getElementById("moonLightingShopBrightness"),
       brightnessValue: document.getElementById("moonLightingShopBrightnessValue"),
       color: document.getElementById("moonLightingShopColor"),
-      scale: document.getElementById("moonLightingShopScale"),
-      scaleValue: document.getElementById("moonLightingShopScaleValue"),
     },
     guide: {
       brightness: document.getElementById("moonLightingGuideBrightness"),
       brightnessValue: document.getElementById("moonLightingGuideBrightnessValue"),
       color: document.getElementById("moonLightingGuideColor"),
-      scale: document.getElementById("moonLightingGuideScale"),
-      scaleValue: document.getElementById("moonLightingGuideScaleValue"),
     },
     player: {
       brightness: document.getElementById("moonLightingPlayerBrightness"),
       brightnessValue: document.getElementById("moonLightingPlayerBrightnessValue"),
       color: document.getElementById("moonLightingPlayerColor"),
-      scale: document.getElementById("moonLightingPlayerScale"),
-      scaleValue: document.getElementById("moonLightingPlayerScaleValue"),
     },
   },
 };
@@ -342,7 +380,6 @@ function reset() {
   const lighting = ensureLightingConfig();
   Object.entries(defaultLighting).forEach(([key, value]) => {
     lighting[key].brightness = value.brightness;
-    lighting[key].scale = value.scale;
     lighting[key].lightColor = value.lightColor;
     lighting[key].glowColor = value.glowColor;
   });
@@ -370,7 +407,7 @@ function setDashboardCollapsed(collapsed) {
 
 function setLightingField(group, key, value) {
   const lighting = ensureLightingConfig();
-  if (key === "brightness" || key === "scale") {
+  if (key === "brightness") {
     lighting[group][key] = Number(value);
   } else {
     lighting[group].lightColor = value;
@@ -387,8 +424,6 @@ function syncLightingControls() {
     controls.brightness.value = String(config.brightness);
     controls.brightnessValue.textContent = `${config.brightness.toFixed(2)}x`;
     controls.color.value = config.lightColor;
-    controls.scale.value = String(config.scale);
-    controls.scaleValue.textContent = `${config.scale.toFixed(2)}x`;
   });
 }
 
@@ -448,7 +483,6 @@ el.resetButton.addEventListener("click", reset);
 Object.entries(el.lighting).forEach(([group, controls]) => {
   controls.brightness.addEventListener("input", event => setLightingField(group, "brightness", event.target.value));
   controls.color.addEventListener("input", event => setLightingField(group, "color", event.target.value));
-  controls.scale.addEventListener("input", event => setLightingField(group, "scale", event.target.value));
 });
 el.lightingSave.addEventListener("click", saveLightingConfig);
 

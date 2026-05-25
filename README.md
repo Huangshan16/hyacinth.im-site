@@ -4,7 +4,16 @@
   [POS]: 仓库根目录的对外说明入口，与 index.html 保持同构，说明当前仓库已采用“原 3D 前端主体 + AI 系统覆盖层”的参赛形态
   [PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
 -->
+
 # 我的月球 | My Moon
+
+开发注释：
+
+```bash
+
+moonSmallModuleScale=1.35
+
+```
 
 一个从 3D 个人主页二创而来的黑客松参赛 Demo。
 

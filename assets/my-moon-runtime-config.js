@@ -20,7 +20,52 @@ window.__MY_MOON_LIGHTING__ = {
       0.8
     ]
   },
-  "small": {
+  "medical": {
+    "brightness": 1,
+    "scale": 1,
+    "surfaceGlow": 0,
+    "activeGlow": 0,
+    "glowColor": "#7d93c7",
+    "lightColor": "#8ea2ff",
+    "lightIntensity": 1.2,
+    "lightDistance": 6,
+    "lightPosition": [
+      0,
+      0.72,
+      0.12
+    ]
+  },
+  "communication": {
+    "brightness": 1,
+    "scale": 1,
+    "surfaceGlow": 0,
+    "activeGlow": 0,
+    "glowColor": "#7d93c7",
+    "lightColor": "#8ea2ff",
+    "lightIntensity": 1.2,
+    "lightDistance": 6,
+    "lightPosition": [
+      0,
+      0.72,
+      0.12
+    ]
+  },
+  "research": {
+    "brightness": 1,
+    "scale": 1,
+    "surfaceGlow": 0,
+    "activeGlow": 0,
+    "glowColor": "#7d93c7",
+    "lightColor": "#8ea2ff",
+    "lightIntensity": 1.2,
+    "lightDistance": 6,
+    "lightPosition": [
+      0,
+      0.72,
+      0.12
+    ]
+  },
+  "energy": {
     "brightness": 1,
     "scale": 1,
     "surfaceGlow": 0,
