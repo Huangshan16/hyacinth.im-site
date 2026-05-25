@@ -104,7 +104,17 @@ function ensureLightingConfig() {
   } catch {
     parsed = null;
   }
-  const next = window.__MY_MOON_LIGHTING__ ?? parsed ?? structuredClone(defaultLighting);
+  const next = structuredClone(defaultLighting);
+  if (window.__MY_MOON_LIGHTING__) {
+    Object.keys(defaultLighting).forEach(key => {
+      next[key] = { ...next[key], ...(window.__MY_MOON_LIGHTING__?.[key] ?? {}) };
+    });
+  }
+  if (parsed) {
+    Object.keys(defaultLighting).forEach(key => {
+      next[key] = { ...next[key], ...(parsed?.[key] ?? {}) };
+    });
+  }
   Object.keys(defaultLighting).forEach(key => {
     next[key] = { ...defaultLighting[key], ...next[key] };
   });
