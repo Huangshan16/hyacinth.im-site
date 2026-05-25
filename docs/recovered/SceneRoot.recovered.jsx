@@ -144,9 +144,9 @@ const modelLightingConfig = {
     activeGlow: 0,
     glowColor: "#d8e7ff",
     lightColor: "#d8e7ff",
-    lightIntensity: 5.8,
-    lightDistance: 16,
-    lightPosition: [0, 3.2, 0.2],
+    lightIntensity: 9.5,
+    lightDistance: 30,
+    lightPosition: [0, 3.2, 0.8],
   },
   small: {
     brightness: 1,
@@ -158,6 +158,28 @@ const modelLightingConfig = {
     lightIntensity: 1.2,
     lightDistance: 6,
     lightPosition: [0, 0.72, 0.12],
+  },
+  shop: {
+    brightness: 1,
+    scale: 1,
+    surfaceGlow: 0,
+    activeGlow: 0,
+    glowColor: "#7d93c7",
+    lightColor: "#a8f0cf",
+    lightIntensity: 3.4,
+    lightDistance: 12,
+    lightPosition: [0, 1.25, 0.35],
+  },
+  guide: {
+    brightness: 1,
+    scale: 1,
+    surfaceGlow: 0,
+    activeGlow: 0,
+    glowColor: "#ffe0a8",
+    lightColor: "#ffe0a8",
+    lightIntensity: 2.2,
+    lightDistance: 8,
+    lightPosition: [0, 0.9, 0.12],
   },
   player: {
     brightness: 1,
@@ -208,6 +230,7 @@ function DisabledPlayerCartBase() {
 
 function HighlightableModelAutoGlow() {
   // 当前 `Y()` 默认从 `modelLightingConfig.small` 读取点光源亮度、颜色与缩放参数，材质自发光只作弱辅助。
+  // 点光源是缩放组的兄弟节点，不随 GLB scale 一起被推远；中央大模型因此能真正照亮周边地面。
   return null;
 }
 
@@ -225,7 +248,7 @@ function CircusTentLandmark({ active, onInteract }) {
           autoGlowIntensity={0}
           highlightIntensity={0}
         />
-        <pointLight color="#d8e7ff" distance={16} decay={2} intensity={5.8} position={[0, 3.2, 0.2]} />
+        <pointLight color="#d8e7ff" distance={30} decay={2} intensity={9.5} position={[0, 3.2, 0.8]} />
       </group>
       {/* 原构建产物在这里额外插入红色 cone 旗帜与 cylinder 旗杆；当前已移除。 */}
     </RigidBody>
@@ -234,6 +257,12 @@ function CircusTentLandmark({ active, onInteract }) {
 
 function PlayerModelAutoGlowNote() {
   // 当前 `Te()` 从 `modelLightingConfig.player` 读取弱自发光、点光、颜色、brightness 与 scale。
+  return null;
+}
+
+function ContactAndGuideModelNotes() {
+  // `contact-booth.glb` 使用 `configKey="shop"`，`booth-cat.glb` 使用 `configKey="guide"`，两者可在控制台分别缩放。
+  // 向导尼卡与合作小铺现在都挂载 `world-label` 文本卡片，保持与其他空间节点一致。
   return null;
 }
 

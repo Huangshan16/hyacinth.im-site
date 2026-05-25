@@ -101,8 +101,26 @@
               <input id="moonLightingSmallScale" type="range" min="0.2" max="3" step="0.05" value="1" />
             </div>
 
+            <div class="moon-ai-lighting-grid" data-lighting-group="shop">
+              <strong>种植仓</strong>
+              <label>亮度 <output id="moonLightingShopBrightnessValue">1.00x</output></label>
+              <input id="moonLightingShopBrightness" type="range" min="0" max="2.5" step="0.05" value="1" />
+              <label>颜色 <input id="moonLightingShopColor" type="color" value="#a8f0cf" /></label>
+              <label>缩放 <output id="moonLightingShopScaleValue">1.00x</output></label>
+              <input id="moonLightingShopScale" type="range" min="0.2" max="3" step="0.05" value="1" />
+            </div>
+
+            <div class="moon-ai-lighting-grid" data-lighting-group="guide">
+              <strong>居住仓</strong>
+              <label>亮度 <output id="moonLightingGuideBrightnessValue">1.00x</output></label>
+              <input id="moonLightingGuideBrightness" type="range" min="0" max="2.5" step="0.05" value="1" />
+              <label>颜色 <input id="moonLightingGuideColor" type="color" value="#ffe0a8" /></label>
+              <label>缩放 <output id="moonLightingGuideScaleValue">1.00x</output></label>
+              <input id="moonLightingGuideScale" type="range" min="0.2" max="3" step="0.05" value="1" />
+            </div>
+
             <div class="moon-ai-lighting-grid" data-lighting-group="player">
-              <strong>用户操作主体</strong>
+              <strong>用户操作居住仓</strong>
               <label>亮度 <output id="moonLightingPlayerBrightnessValue">1.00x</output></label>
               <input id="moonLightingPlayerBrightness" type="range" min="0" max="2.5" step="0.05" value="1" />
               <label>颜色 <input id="moonLightingPlayerColor" type="color" value="#9aa7ff" /></label>

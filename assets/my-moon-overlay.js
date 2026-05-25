@@ -14,9 +14,9 @@ const defaultLighting = {
     activeGlow: 0,
     glowColor: "#d8e7ff",
     lightColor: "#d8e7ff",
-    lightIntensity: 5.8,
-    lightDistance: 16,
-    lightPosition: [0, 3.2, 0.2],
+    lightIntensity: 9.5,
+    lightDistance: 30,
+    lightPosition: [0, 3.2, 0.8],
   },
   small: {
     brightness: 1,
@@ -28,6 +28,28 @@ const defaultLighting = {
     lightIntensity: 1.2,
     lightDistance: 6,
     lightPosition: [0, 0.72, 0.12],
+  },
+  shop: {
+    brightness: 1,
+    scale: 1,
+    surfaceGlow: 0,
+    activeGlow: 0,
+    glowColor: "#7d93c7",
+    lightColor: "#a8f0cf",
+    lightIntensity: 3.4,
+    lightDistance: 12,
+    lightPosition: [0, 1.25, 0.35],
+  },
+  guide: {
+    brightness: 1,
+    scale: 1,
+    surfaceGlow: 0,
+    activeGlow: 0,
+    glowColor: "#ffe0a8",
+    lightColor: "#ffe0a8",
+    lightIntensity: 2.2,
+    lightDistance: 8,
+    lightPosition: [0, 0.9, 0.12],
   },
   player: {
     brightness: 1,
@@ -50,9 +72,9 @@ function ensureLightingConfig() {
     parsed = null;
   }
   const next = window.__MY_MOON_LIGHTING__ ?? parsed ?? structuredClone(defaultLighting);
-  next.centerpiece = { ...defaultLighting.centerpiece, ...next.centerpiece };
-  next.small = { ...defaultLighting.small, ...next.small };
-  next.player = { ...defaultLighting.player, ...next.player };
+  Object.keys(defaultLighting).forEach(key => {
+    next[key] = { ...defaultLighting[key], ...next[key] };
+  });
   window.__MY_MOON_LIGHTING__ = next;
   return next;
 }
@@ -144,6 +166,20 @@ const el = {
       color: document.getElementById("moonLightingSmallColor"),
       scale: document.getElementById("moonLightingSmallScale"),
       scaleValue: document.getElementById("moonLightingSmallScaleValue"),
+    },
+    shop: {
+      brightness: document.getElementById("moonLightingShopBrightness"),
+      brightnessValue: document.getElementById("moonLightingShopBrightnessValue"),
+      color: document.getElementById("moonLightingShopColor"),
+      scale: document.getElementById("moonLightingShopScale"),
+      scaleValue: document.getElementById("moonLightingShopScaleValue"),
+    },
+    guide: {
+      brightness: document.getElementById("moonLightingGuideBrightness"),
+      brightnessValue: document.getElementById("moonLightingGuideBrightnessValue"),
+      color: document.getElementById("moonLightingGuideColor"),
+      scale: document.getElementById("moonLightingGuideScale"),
+      scaleValue: document.getElementById("moonLightingGuideScaleValue"),
     },
     player: {
       brightness: document.getElementById("moonLightingPlayerBrightness"),
@@ -304,18 +340,12 @@ function reset() {
   Object.keys(state).forEach(key => delete state[key]);
   Object.assign(state, next);
   const lighting = ensureLightingConfig();
-  lighting.centerpiece.brightness = defaultLighting.centerpiece.brightness;
-  lighting.centerpiece.scale = defaultLighting.centerpiece.scale;
-  lighting.centerpiece.lightColor = defaultLighting.centerpiece.lightColor;
-  lighting.centerpiece.glowColor = defaultLighting.centerpiece.glowColor;
-  lighting.small.brightness = defaultLighting.small.brightness;
-  lighting.small.scale = defaultLighting.small.scale;
-  lighting.small.lightColor = defaultLighting.small.lightColor;
-  lighting.small.glowColor = defaultLighting.small.glowColor;
-  lighting.player.brightness = defaultLighting.player.brightness;
-  lighting.player.scale = defaultLighting.player.scale;
-  lighting.player.lightColor = defaultLighting.player.lightColor;
-  lighting.player.glowColor = defaultLighting.player.glowColor;
+  Object.entries(defaultLighting).forEach(([key, value]) => {
+    lighting[key].brightness = value.brightness;
+    lighting[key].scale = value.scale;
+    lighting[key].lightColor = value.lightColor;
+    lighting[key].glowColor = value.glowColor;
+  });
   el.body.dataset.mode = "normal";
   syncLightingControls();
   render();
