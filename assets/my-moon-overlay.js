@@ -9,8 +9,9 @@ const lerp = (a, b, t) => a + (b - a) * t;
 const defaultLighting = {
   centerpiece: {
     brightness: 1,
-    surfaceGlow: 0.08,
-    activeGlow: 0.22,
+    scale: 1,
+    surfaceGlow: 0,
+    activeGlow: 0,
     glowColor: "#d8e7ff",
     lightColor: "#d8e7ff",
     lightIntensity: 5.8,
@@ -19,17 +20,19 @@ const defaultLighting = {
   },
   small: {
     brightness: 1,
-    surfaceGlow: 0.045,
-    activeGlow: 0.32,
+    scale: 1,
+    surfaceGlow: 0,
+    activeGlow: 0,
     glowColor: "#7d93c7",
     lightColor: "#8ea2ff",
-    lightIntensity: 0,
+    lightIntensity: 1.2,
     lightDistance: 6,
     lightPosition: [0, 0.72, 0.12],
   },
   player: {
     brightness: 1,
-    surfaceGlow: 0.08,
+    scale: 1,
+    surfaceGlow: 0.02,
     glowColor: "#789087",
     lightColor: "#9aa7ff",
     lightIntensity: 1.45,
@@ -39,7 +42,14 @@ const defaultLighting = {
 };
 
 function ensureLightingConfig() {
-  const next = window.__MY_MOON_LIGHTING__ ?? structuredClone(defaultLighting);
+  let parsed = null;
+  try {
+    const stored = window.localStorage.getItem("myMoonLighting");
+    parsed = stored ? JSON.parse(stored) : null;
+  } catch {
+    parsed = null;
+  }
+  const next = window.__MY_MOON_LIGHTING__ ?? parsed ?? structuredClone(defaultLighting);
   next.centerpiece = { ...defaultLighting.centerpiece, ...next.centerpiece };
   next.small = { ...defaultLighting.small, ...next.small };
   next.player = { ...defaultLighting.player, ...next.player };
@@ -118,12 +128,31 @@ const el = {
   batteryBar: document.getElementById("batteryBar"),
   lifeBar: document.getElementById("lifeBar"),
   log: document.getElementById("moonAiLog"),
-  lightingCenterpiece: document.getElementById("moonLightingCenterpiece"),
-  lightingCenterpieceValue: document.getElementById("moonLightingCenterpieceValue"),
-  lightingSmall: document.getElementById("moonLightingSmall"),
-  lightingSmallValue: document.getElementById("moonLightingSmallValue"),
-  lightingPlayer: document.getElementById("moonLightingPlayer"),
-  lightingPlayerValue: document.getElementById("moonLightingPlayerValue"),
+  lightingSave: document.getElementById("moonLightingSave"),
+  lightingSaveStatus: document.getElementById("moonLightingSaveStatus"),
+  lighting: {
+    centerpiece: {
+      brightness: document.getElementById("moonLightingCenterpieceBrightness"),
+      brightnessValue: document.getElementById("moonLightingCenterpieceBrightnessValue"),
+      color: document.getElementById("moonLightingCenterpieceColor"),
+      scale: document.getElementById("moonLightingCenterpieceScale"),
+      scaleValue: document.getElementById("moonLightingCenterpieceScaleValue"),
+    },
+    small: {
+      brightness: document.getElementById("moonLightingSmallBrightness"),
+      brightnessValue: document.getElementById("moonLightingSmallBrightnessValue"),
+      color: document.getElementById("moonLightingSmallColor"),
+      scale: document.getElementById("moonLightingSmallScale"),
+      scaleValue: document.getElementById("moonLightingSmallScaleValue"),
+    },
+    player: {
+      brightness: document.getElementById("moonLightingPlayerBrightness"),
+      brightnessValue: document.getElementById("moonLightingPlayerBrightnessValue"),
+      color: document.getElementById("moonLightingPlayerColor"),
+      scale: document.getElementById("moonLightingPlayerScale"),
+      scaleValue: document.getElementById("moonLightingPlayerScaleValue"),
+    },
+  },
 };
 
 function pushLog(text) {
@@ -276,8 +305,17 @@ function reset() {
   Object.assign(state, next);
   const lighting = ensureLightingConfig();
   lighting.centerpiece.brightness = defaultLighting.centerpiece.brightness;
+  lighting.centerpiece.scale = defaultLighting.centerpiece.scale;
+  lighting.centerpiece.lightColor = defaultLighting.centerpiece.lightColor;
+  lighting.centerpiece.glowColor = defaultLighting.centerpiece.glowColor;
   lighting.small.brightness = defaultLighting.small.brightness;
+  lighting.small.scale = defaultLighting.small.scale;
+  lighting.small.lightColor = defaultLighting.small.lightColor;
+  lighting.small.glowColor = defaultLighting.small.glowColor;
   lighting.player.brightness = defaultLighting.player.brightness;
+  lighting.player.scale = defaultLighting.player.scale;
+  lighting.player.lightColor = defaultLighting.player.lightColor;
+  lighting.player.glowColor = defaultLighting.player.glowColor;
   el.body.dataset.mode = "normal";
   syncLightingControls();
   render();
@@ -300,23 +338,47 @@ function setDashboardCollapsed(collapsed) {
   el.launcher.setAttribute("aria-expanded", String(!collapsed));
 }
 
-function setLightingBrightness(group, value) {
+function setLightingField(group, key, value) {
   const lighting = ensureLightingConfig();
-  lighting[group].brightness = Number(value);
+  if (key === "brightness" || key === "scale") {
+    lighting[group][key] = Number(value);
+  } else {
+    lighting[group].lightColor = value;
+    lighting[group].glowColor = value;
+  }
+  window.localStorage.setItem("myMoonLighting", JSON.stringify(lighting));
   syncLightingControls();
 }
 
 function syncLightingControls() {
   const lighting = ensureLightingConfig();
-  const values = [
-    [el.lightingCenterpiece, el.lightingCenterpieceValue, lighting.centerpiece.brightness],
-    [el.lightingSmall, el.lightingSmallValue, lighting.small.brightness],
-    [el.lightingPlayer, el.lightingPlayerValue, lighting.player.brightness],
-  ];
-  values.forEach(([input, output, value]) => {
-    input.value = String(value);
-    output.textContent = `${value.toFixed(2)}x`;
+  Object.entries(el.lighting).forEach(([group, controls]) => {
+    const config = lighting[group];
+    controls.brightness.value = String(config.brightness);
+    controls.brightnessValue.textContent = `${config.brightness.toFixed(2)}x`;
+    controls.color.value = config.lightColor;
+    controls.scale.value = String(config.scale);
+    controls.scaleValue.textContent = `${config.scale.toFixed(2)}x`;
   });
+}
+
+async function saveLightingConfig() {
+  const lighting = ensureLightingConfig();
+  window.localStorage.setItem("myMoonLighting", JSON.stringify(lighting));
+  try {
+    const response = await fetch("/__my-moon/save-config", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(lighting),
+    });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    el.lightingSaveStatus.textContent = "已写回 assets/my-moon-runtime-config.js";
+    pushLog("模型参数已保存到运行时配置文件。");
+  } catch {
+    el.lightingSaveStatus.textContent = "已保存到浏览器；当前服务器未启用写回接口";
+    pushLog("模型参数已保存到浏览器本地缓存。");
+  }
+  renderLog();
 }
 
 function render() {
@@ -353,9 +415,12 @@ el.dockButton.addEventListener("click", confirmDock);
 el.eventButton.addEventListener("click", startEvent);
 el.doorButton.addEventListener("click", openDoors);
 el.resetButton.addEventListener("click", reset);
-el.lightingCenterpiece.addEventListener("input", event => setLightingBrightness("centerpiece", event.target.value));
-el.lightingSmall.addEventListener("input", event => setLightingBrightness("small", event.target.value));
-el.lightingPlayer.addEventListener("input", event => setLightingBrightness("player", event.target.value));
+Object.entries(el.lighting).forEach(([group, controls]) => {
+  controls.brightness.addEventListener("input", event => setLightingField(group, "brightness", event.target.value));
+  controls.color.addEventListener("input", event => setLightingField(group, "color", event.target.value));
+  controls.scale.addEventListener("input", event => setLightingField(group, "scale", event.target.value));
+});
+el.lightingSave.addEventListener("click", saveLightingConfig);
 
 setDashboardCollapsed(initialOverlayCollapsed);
 syncLightingControls();

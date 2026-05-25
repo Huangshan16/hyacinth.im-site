@@ -6,11 +6,12 @@
 my-moon-demo.css: 旧月面灰盒 Demo 样式入口，当前保留为历史方案，不再作为主入口样式，[PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
 my-moon-demo.js: 旧月面灰盒 Demo 状态机，当前保留为历史方案，不再作为主入口逻辑，[PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
 my-moon-models.js: 旧月面灰盒 3D 素材适配层，当前保留为历史探索实现，不再作为主入口逻辑，[PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
+my-moon-runtime-config.js: “我的月球”模型光照、颜色与缩放的可持久化运行时配置，由本地控制台保存接口写回，[PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
 my-moon-overlay.css: “我的月球”AI 系统覆盖层样式，叠加在原 3D 广场主体之上显示指标、控制、日志与模型亮度滑杆，[PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
 my-moon-overlay.js: “我的月球”AI 系统覆盖层状态机，驱动并网、遮挡、恢复、播报与 `window.__MY_MOON_LIGHTING__` 亮度调节，[PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
 index-BezMjCv7.js: 原 3D 作品集构建入口，当前重新成为 index.html 的主体前端入口，[PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
 index-Coy5B0kA.css: 原 3D 作品集构建样式，当前重新成为 index.html 的主体页面样式，[PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
-SceneRoot-DLjunhxr.js: 原 3D 作品集场景 chunk，被 `index-BezMjCv7.js` 动态导入作为主体场景，当前在可见地表层 `Ye/Je` 直接引用 `textures/plaza-ground.png`，[PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
+SceneRoot-DLjunhxr.js: 原 3D 作品集场景 chunk，被 `index-BezMjCv7.js` 动态导入作为主体场景，当前接入月面地表、夜景天气与 `window.__MY_MOON_LIGHTING__` 点光源调参，[PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
 rolldown-runtime-BYbx6iT9.js: 原构建运行时 chunk，当前仍服务于主体 3D 前端启动，[PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
 vendor-Bs52F_9B.js: 原第三方依赖 chunk，当前仍服务于主体 3D 前端启动，[PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md
 vendor-motion-BToyP3Bx.js: 原动画依赖 chunk，当前仍服务于主体 3D 前端动效与过渡，[PROTOCOL]: 变更时更新此头部，然后检查 AGENTS.md

@@ -14,6 +14,7 @@
 
 - 原 3D 场景继续支持 `WASD` / 方向键 / 移动端摇杆探索
 - AI 覆盖层支持 `接入能源舱`、`启动遮挡事件`、`打开双门`、`恢复稳定`
+- 模型控制台支持按 `中间大模型`、`其他小模型`、`用户操作主体` 分组调节亮度、颜色和缩放
 - 页面同步展示太阳输入、发电功率、电池压力、生命支持与居住舱风险
 - AI 会在 `warning` / `emergency` / `recovery` 模式下裁剪或恢复负载
 
@@ -38,6 +39,19 @@ python3 -m http.server 4173 --bind 127.0.0.1
 http://127.0.0.1:4173/
 ```
 
+如果需要在网页控制台里点击 `保存参数` 并写回代码文件，使用本地写回服务器：
+
+```bash
+cd /Volumes/SSD/code/hyacinth.im-site
+node tools/my-moon-config-server.mjs
+```
+
+写回目标是：
+
+```text
+assets/my-moon-runtime-config.js
+```
+
 ## 文档导航
 
 - [二创参赛项目 Spec](docs/2026-05-23-我的月球-3d个人主页二创参赛项目-spec.md)
@@ -53,6 +67,7 @@ http://127.0.0.1:4173/
 assets/index-Coy5B0kA.css
 assets/index-BezMjCv7.js
 assets/textures/plaza-ground.png
+assets/my-moon-runtime-config.js
 assets/my-moon-overlay.css
 assets/my-moon-overlay.js
 ```

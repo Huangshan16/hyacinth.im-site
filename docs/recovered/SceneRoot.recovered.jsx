@@ -139,8 +139,9 @@ const modelLightingConfig = {
   // 运行时真实入口挂在 `window.__MY_MOON_LIGHTING__`
   centerpiece: {
     brightness: 1,
-    surfaceGlow: 0.08,
-    activeGlow: 0.22,
+    scale: 1,
+    surfaceGlow: 0,
+    activeGlow: 0,
     glowColor: "#d8e7ff",
     lightColor: "#d8e7ff",
     lightIntensity: 5.8,
@@ -149,17 +150,19 @@ const modelLightingConfig = {
   },
   small: {
     brightness: 1,
-    surfaceGlow: 0.045,
-    activeGlow: 0.32,
+    scale: 1,
+    surfaceGlow: 0,
+    activeGlow: 0,
     glowColor: "#7d93c7",
     lightColor: "#8ea2ff",
-    lightIntensity: 0,
+    lightIntensity: 1.2,
     lightDistance: 6,
     lightPosition: [0, 0.72, 0.12],
   },
   player: {
     brightness: 1,
-    surfaceGlow: 0.08,
+    scale: 1,
+    surfaceGlow: 0.02,
     glowColor: "#789087",
     lightColor: "#9aa7ff",
     lightIntensity: 1.45,
@@ -204,7 +207,7 @@ function DisabledPlayerCartBase() {
 }
 
 function HighlightableModelAutoGlow() {
-  // 当前 `Y()` 默认从 `modelLightingConfig.small` 读取亮度参数，并逐帧响应 `brightness` 滑杆变化。
+  // 当前 `Y()` 默认从 `modelLightingConfig.small` 读取点光源亮度、颜色与缩放参数，材质自发光只作弱辅助。
   return null;
 }
 
@@ -219,8 +222,8 @@ function CircusTentLandmark({ active, onInteract }) {
           rotation={[0, Math.PI + Math.PI / 2, 0]}
           scale={15}
           autoGlowColor="#d8e7ff"
-          autoGlowIntensity={0.08}
-          highlightIntensity={0.22}
+          autoGlowIntensity={0}
+          highlightIntensity={0}
         />
         <pointLight color="#d8e7ff" distance={16} decay={2} intensity={5.8} position={[0, 3.2, 0.2]} />
       </group>
@@ -230,7 +233,7 @@ function CircusTentLandmark({ active, onInteract }) {
 }
 
 function PlayerModelAutoGlowNote() {
-  // 当前 `Te()` 从 `modelLightingConfig.player` 读取弱自发光、点光和 `brightness`。
+  // 当前 `Te()` 从 `modelLightingConfig.player` 读取弱自发光、点光、颜色、brightness 与 scale。
   return null;
 }
 
@@ -260,3 +263,8 @@ const weatherProfiles = [
     sunColor: "#7b8aa0",
   },
 ];
+
+function chooseWeatherProfile(currentKey) {
+  // 运行时 `it()` 已在单一夜景配置下回退到 `weatherProfiles[0]`，防止定时切换过滤成空数组。
+  return weatherProfiles.find(item => item.key !== currentKey) ?? weatherProfiles[0];
+}

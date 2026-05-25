@@ -77,26 +77,40 @@
             <button id="resetButton" type="button">恢复稳定</button>
           </div>
 
-          <section class="moon-ai-lighting" aria-label="模型亮度调节">
-            <div class="moon-ai-log-title">模型亮度</div>
+          <section class="moon-ai-lighting" aria-label="模型调参控制台">
+            <div class="moon-ai-lighting-head">
+              <div class="moon-ai-log-title">模型控制台</div>
+              <button id="moonLightingSave" type="button">保存参数</button>
+            </div>
 
-            <label class="moon-ai-slider" for="moonLightingCenterpiece">
-              <span>中间大模型</span>
-              <strong id="moonLightingCenterpieceValue">1.00x</strong>
-            </label>
-            <input id="moonLightingCenterpiece" type="range" min="0" max="2.5" step="0.05" value="1" />
+            <div class="moon-ai-lighting-grid" data-lighting-group="centerpiece">
+              <strong>中间大模型</strong>
+              <label>亮度 <output id="moonLightingCenterpieceBrightnessValue">1.00x</output></label>
+              <input id="moonLightingCenterpieceBrightness" type="range" min="0" max="2.5" step="0.05" value="1" />
+              <label>颜色 <input id="moonLightingCenterpieceColor" type="color" value="#d8e7ff" /></label>
+              <label>缩放 <output id="moonLightingCenterpieceScaleValue">1.00x</output></label>
+              <input id="moonLightingCenterpieceScale" type="range" min="0.2" max="3" step="0.05" value="1" />
+            </div>
 
-            <label class="moon-ai-slider" for="moonLightingSmall">
-              <span>其他小模型</span>
-              <strong id="moonLightingSmallValue">1.00x</strong>
-            </label>
-            <input id="moonLightingSmall" type="range" min="0" max="2.5" step="0.05" value="1" />
+            <div class="moon-ai-lighting-grid" data-lighting-group="small">
+              <strong>其他小模型</strong>
+              <label>亮度 <output id="moonLightingSmallBrightnessValue">1.00x</output></label>
+              <input id="moonLightingSmallBrightness" type="range" min="0" max="2.5" step="0.05" value="1" />
+              <label>颜色 <input id="moonLightingSmallColor" type="color" value="#8ea2ff" /></label>
+              <label>缩放 <output id="moonLightingSmallScaleValue">1.00x</output></label>
+              <input id="moonLightingSmallScale" type="range" min="0.2" max="3" step="0.05" value="1" />
+            </div>
 
-            <label class="moon-ai-slider" for="moonLightingPlayer">
-              <span>用户操作主体</span>
-              <strong id="moonLightingPlayerValue">1.00x</strong>
-            </label>
-            <input id="moonLightingPlayer" type="range" min="0" max="2.5" step="0.05" value="1" />
+            <div class="moon-ai-lighting-grid" data-lighting-group="player">
+              <strong>用户操作主体</strong>
+              <label>亮度 <output id="moonLightingPlayerBrightnessValue">1.00x</output></label>
+              <input id="moonLightingPlayerBrightness" type="range" min="0" max="2.5" step="0.05" value="1" />
+              <label>颜色 <input id="moonLightingPlayerColor" type="color" value="#9aa7ff" /></label>
+              <label>缩放 <output id="moonLightingPlayerScaleValue">1.00x</output></label>
+              <input id="moonLightingPlayerScale" type="range" min="0.2" max="3" step="0.05" value="1" />
+            </div>
+
+            <p class="moon-ai-save-status" id="moonLightingSaveStatus">未保存</p>
           </section>
 
           <div class="moon-ai-log">
@@ -126,6 +140,7 @@
       </div>
     </section>
 
+    <script src="./assets/my-moon-runtime-config.js"></script>
     <script type="module" src="./assets/index-BezMjCv7.js"></script>
     <script src="./assets/my-moon-overlay.js"></script>
   </body>

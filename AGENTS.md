@@ -5,11 +5,13 @@
 <directory>
 ./assets/ - 原 3D 前端 bundle、“我的月球”AI 覆盖层、当前月面地表纹理、历史灰盒方案与媒体资源（9类成员: `index-*`、`SceneRoot-*`、`my-moon-overlay.*`、`my-moon-demo.*`、`my-moon-models.js`、vendor chunks、`audio`、`models`、`three`、`posters`、`textures`、`videos-web`）
 ./docs/ - 面向仓库读者的说明、决策记录、开发记忆、构建产物反整理与配图素材（5类成员: `*.md`、`daily`、`recovered`、`image`、`media`）
+./tools/ - 本地开发辅助脚本，当前提供模型调参控制台的静态预览与配置写回服务
 </directory>
 
 <config>
 index.html - 站点入口 HTML，启动原 3D 作品广场 bundle，并叠加 `assets/my-moon-overlay.*` 作为 AI 系统前端
 README.md - 项目说明书，解释“我的月球”Demo 定位、交互方式、本地预览与文档导航
+tools/my-moon-config-server.mjs - 本地调参服务器，提供静态预览并把控制台参数保存回 `assets/my-moon-runtime-config.js`
 .nojekyll - 告知 GitHub Pages 按原样发布静态资源
 </config>
 
@@ -34,6 +36,9 @@ README.md - 项目说明书，解释“我的月球”Demo 定位、交互方式
 │  ├─ posters/
 │  ├─ textures/
 │  └─ videos-web/
+├─ tools/
+│  ├─ AGENTS.md
+│  └─ my-moon-config-server.mjs
 └─ docs/
    ├─ AGENTS.md
    ├─ 2026-05-22-项目讨论补充记录.md
@@ -60,6 +65,7 @@ README.md - 项目说明书，解释“我的月球”Demo 定位、交互方式
 - 修改入口资源引用或目录结构时，先更新对应文件头部契约，再同步此文件。
 - 若新增模块级目录，必须在该目录创建对应 `AGENTS.md`，保持 L1/L2/L3 同构。
 - 本地预览优先使用最简单的静态服务器，并用真实 HTTP 探测验证资源可达。
+- 需要从 Web 控制台写回仓库文件时，使用 `tools/my-moon-config-server.mjs`，不要让静态页面假装具备文件系统权限。
 
 ## 变更日志
 
@@ -74,3 +80,4 @@ README.md - 项目说明书，解释“我的月球”Demo 定位、交互方式
 - 2026-05-23: 入口重新切回原 3D 前端 bundle，并新增 `assets/my-moon-overlay.*` 作为“我的月球”AI 系统覆盖层。
 - 2026-05-24: 将原 3D 场景主地表直接接入 `assets/textures/plaza-ground.png`，避免外部地形覆盖层穿模。
 - 2026-05-24: 新增 `docs/recovered/SceneRoot.recovered.jsx`，记录从压缩场景 chunk 恢复出的地表组件骨架与真实补丁点。
+- 2026-05-25: 新增 `assets/my-moon-runtime-config.js` 与 `tools/my-moon-config-server.mjs`，让模型亮度、颜色和缩放可以在 Web 控制台调节并写回配置文件。
