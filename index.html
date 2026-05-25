@@ -77,6 +77,28 @@
             <button id="resetButton" type="button">恢复稳定</button>
           </div>
 
+          <section class="moon-ai-lighting" aria-label="模型亮度调节">
+            <div class="moon-ai-log-title">模型亮度</div>
+
+            <label class="moon-ai-slider" for="moonLightingCenterpiece">
+              <span>中间大模型</span>
+              <strong id="moonLightingCenterpieceValue">1.00x</strong>
+            </label>
+            <input id="moonLightingCenterpiece" type="range" min="0" max="2.5" step="0.05" value="1" />
+
+            <label class="moon-ai-slider" for="moonLightingSmall">
+              <span>其他小模型</span>
+              <strong id="moonLightingSmallValue">1.00x</strong>
+            </label>
+            <input id="moonLightingSmall" type="range" min="0" max="2.5" step="0.05" value="1" />
+
+            <label class="moon-ai-slider" for="moonLightingPlayer">
+              <span>用户操作主体</span>
+              <strong id="moonLightingPlayerValue">1.00x</strong>
+            </label>
+            <input id="moonLightingPlayer" type="range" min="0" max="2.5" step="0.05" value="1" />
+          </section>
+
           <div class="moon-ai-log">
             <div class="moon-ai-log-title">系统播报</div>
             <ul id="moonAiLog"></ul>

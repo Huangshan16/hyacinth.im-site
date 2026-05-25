@@ -6,6 +6,46 @@
 */
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 const lerp = (a, b, t) => a + (b - a) * t;
+const defaultLighting = {
+  centerpiece: {
+    brightness: 1,
+    surfaceGlow: 0.08,
+    activeGlow: 0.22,
+    glowColor: "#d8e7ff",
+    lightColor: "#d8e7ff",
+    lightIntensity: 5.8,
+    lightDistance: 16,
+    lightPosition: [0, 3.2, 0.2],
+  },
+  small: {
+    brightness: 1,
+    surfaceGlow: 0.045,
+    activeGlow: 0.32,
+    glowColor: "#7d93c7",
+    lightColor: "#8ea2ff",
+    lightIntensity: 0,
+    lightDistance: 6,
+    lightPosition: [0, 0.72, 0.12],
+  },
+  player: {
+    brightness: 1,
+    surfaceGlow: 0.08,
+    glowColor: "#789087",
+    lightColor: "#9aa7ff",
+    lightIntensity: 1.45,
+    lightDistance: 5.8,
+    lightPosition: [0, 0.72, 0.18],
+  },
+};
+
+function ensureLightingConfig() {
+  const next = window.__MY_MOON_LIGHTING__ ?? structuredClone(defaultLighting);
+  next.centerpiece = { ...defaultLighting.centerpiece, ...next.centerpiece };
+  next.small = { ...defaultLighting.small, ...next.small };
+  next.player = { ...defaultLighting.player, ...next.player };
+  window.__MY_MOON_LIGHTING__ = next;
+  return next;
+}
 
 const loads = {
   oxygenLoop: { normal: 18, min: 16, cap: 18 },
@@ -78,6 +118,12 @@ const el = {
   batteryBar: document.getElementById("batteryBar"),
   lifeBar: document.getElementById("lifeBar"),
   log: document.getElementById("moonAiLog"),
+  lightingCenterpiece: document.getElementById("moonLightingCenterpiece"),
+  lightingCenterpieceValue: document.getElementById("moonLightingCenterpieceValue"),
+  lightingSmall: document.getElementById("moonLightingSmall"),
+  lightingSmallValue: document.getElementById("moonLightingSmallValue"),
+  lightingPlayer: document.getElementById("moonLightingPlayer"),
+  lightingPlayerValue: document.getElementById("moonLightingPlayerValue"),
 };
 
 function pushLog(text) {
@@ -228,7 +274,12 @@ function reset() {
   const next = initialState();
   Object.keys(state).forEach(key => delete state[key]);
   Object.assign(state, next);
+  const lighting = ensureLightingConfig();
+  lighting.centerpiece.brightness = defaultLighting.centerpiece.brightness;
+  lighting.small.brightness = defaultLighting.small.brightness;
+  lighting.player.brightness = defaultLighting.player.brightness;
   el.body.dataset.mode = "normal";
+  syncLightingControls();
   render();
 }
 
@@ -247,6 +298,25 @@ function renderLog() {
 function setDashboardCollapsed(collapsed) {
   el.dashboard.classList.toggle("is-collapsed", collapsed);
   el.launcher.setAttribute("aria-expanded", String(!collapsed));
+}
+
+function setLightingBrightness(group, value) {
+  const lighting = ensureLightingConfig();
+  lighting[group].brightness = Number(value);
+  syncLightingControls();
+}
+
+function syncLightingControls() {
+  const lighting = ensureLightingConfig();
+  const values = [
+    [el.lightingCenterpiece, el.lightingCenterpieceValue, lighting.centerpiece.brightness],
+    [el.lightingSmall, el.lightingSmallValue, lighting.small.brightness],
+    [el.lightingPlayer, el.lightingPlayerValue, lighting.player.brightness],
+  ];
+  values.forEach(([input, output, value]) => {
+    input.value = String(value);
+    output.textContent = `${value.toFixed(2)}x`;
+  });
 }
 
 function render() {
@@ -283,7 +353,11 @@ el.dockButton.addEventListener("click", confirmDock);
 el.eventButton.addEventListener("click", startEvent);
 el.doorButton.addEventListener("click", openDoors);
 el.resetButton.addEventListener("click", reset);
+el.lightingCenterpiece.addEventListener("input", event => setLightingBrightness("centerpiece", event.target.value));
+el.lightingSmall.addEventListener("input", event => setLightingBrightness("small", event.target.value));
+el.lightingPlayer.addEventListener("input", event => setLightingBrightness("player", event.target.value));
 
 setDashboardCollapsed(initialOverlayCollapsed);
+syncLightingControls();
 render();
 window.setInterval(tickSystem, 1000);

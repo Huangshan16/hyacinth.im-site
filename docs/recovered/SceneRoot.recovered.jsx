@@ -13,6 +13,7 @@
 
 const aliasMap = {
   ze: "WorldStage",
+  modelLightingConfig: "GlobalModelLightingConfig",
   Ye: "OuterGroundTexture",
   Je: "CenterGroundTexture",
   Xe: "GroundTilePatches",
@@ -134,6 +135,39 @@ function DisabledSculptureNodes() {
   return null;
 }
 
+const modelLightingConfig = {
+  // 运行时真实入口挂在 `window.__MY_MOON_LIGHTING__`
+  centerpiece: {
+    brightness: 1,
+    surfaceGlow: 0.08,
+    activeGlow: 0.22,
+    glowColor: "#d8e7ff",
+    lightColor: "#d8e7ff",
+    lightIntensity: 5.8,
+    lightDistance: 16,
+    lightPosition: [0, 3.2, 0.2],
+  },
+  small: {
+    brightness: 1,
+    surfaceGlow: 0.045,
+    activeGlow: 0.32,
+    glowColor: "#7d93c7",
+    lightColor: "#8ea2ff",
+    lightIntensity: 0,
+    lightDistance: 6,
+    lightPosition: [0, 0.72, 0.12],
+  },
+  player: {
+    brightness: 1,
+    surfaceGlow: 0.08,
+    glowColor: "#789087",
+    lightColor: "#9aa7ff",
+    lightIntensity: 1.45,
+    lightDistance: 5.8,
+    lightPosition: [0, 0.72, 0.18],
+  },
+};
+
 function SceneRoot(props) {
   return (
     <Canvas camera={{ position: [0, 6.5, 14], fov: 45, near: 0.1, far: 95 }} shadows>
@@ -170,7 +204,7 @@ function DisabledPlayerCartBase() {
 }
 
 function HighlightableModelAutoGlow() {
-  // 当前 `Y()` 已从“仅高亮时发光”改为“常亮基础发光 + 激活增强”。
+  // 当前 `Y()` 默认从 `modelLightingConfig.small` 读取亮度参数，并逐帧响应 `brightness` 滑杆变化。
   return null;
 }
 
@@ -185,9 +219,10 @@ function CircusTentLandmark({ active, onInteract }) {
           rotation={[0, Math.PI + Math.PI / 2, 0]}
           scale={15}
           autoGlowColor="#d8e7ff"
-          autoGlowIntensity={0.52}
-          highlightIntensity={0.92}
+          autoGlowIntensity={0.08}
+          highlightIntensity={0.22}
         />
+        <pointLight color="#d8e7ff" distance={16} decay={2} intensity={5.8} position={[0, 3.2, 0.2]} />
       </group>
       {/* 原构建产物在这里额外插入红色 cone 旗帜与 cylinder 旗杆；当前已移除。 */}
     </RigidBody>
@@ -195,7 +230,7 @@ function CircusTentLandmark({ active, onInteract }) {
 }
 
 function PlayerModelAutoGlowNote() {
-  // 当前 `Te()` 会在玩家 `cape-cat.glb` 的材质遍历里注入基础 emissive，默认常亮。
+  // 当前 `Te()` 从 `modelLightingConfig.player` 读取弱自发光、点光和 `brightness`。
   return null;
 }
 

@@ -197,6 +197,33 @@
   padding-top: 14px;
 }
 
+.moon-ai-lighting {
+  margin-top: 18px;
+  border-top: 1px solid var(--moon-line);
+  padding-top: 14px;
+}
+
+.moon-ai-lighting input[type="range"] {
+  width: 100%;
+  margin: 10px 0 14px;
+  accent-color: var(--moon-blue);
+}
+
+.moon-ai-slider {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--moon-ink);
+  font-size: 13px;
+}
+
+.moon-ai-slider strong {
+  color: var(--moon-blue);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+}
+
 .moon-ai-log ul {
   display: grid;
   gap: 10px;
