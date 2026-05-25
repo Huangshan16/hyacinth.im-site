@@ -8,6 +8,7 @@
 /*
  * 这不是原始源码。
  * 仓库没有 source map / sourcesContent / src 目录，只能从构建产物恢复组件意图。
+ * 当前运行时已移除场景级 GLB `O.preload(...)`，避免首页预热大模型文件。
  */
 
 const aliasMap = {
@@ -16,10 +17,20 @@ const aliasMap = {
   Je: "CenterGroundTexture",
   Xe: "GroundTilePatches",
   ie: "BackdropGroundRing",
+  ae: "DisabledBackdropMountains",
+  oe: "DisabledBackdropClouds",
+  le: "DisabledOuterBackdropTree",
+  Ze: "DisabledFenceAndBorder",
+  $e: "DisabledDecorativeTree",
   Ae: "DisabledPlayerCartBase",
   Be: "CircusTentLandmark",
+  He: "DisabledFountainLandmark",
   Te: "PlayerModel",
+  We: "DisabledRadioLandmark",
+  at: "DisabledWorksRing",
+  ue: "DisabledSculptureNodes",
   xe: "DisabledGrassField",
+  et: "DisabledDecorativeConeClusters",
   ke: "PlayerController",
   lt: "SceneRoot",
 };
@@ -67,12 +78,12 @@ function OuterGroundTexture() {
   texture.colorSpace = SRGBColorSpace;
   texture.wrapS = RepeatWrapping;
   texture.wrapT = RepeatWrapping;
-  texture.repeat.set(8, 8);
+  texture.repeat.set(8.8, 8.8);
   texture.anisotropy = 4;
 
   return (
     <mesh receiveShadow position={[0, 0.025, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-      <circleGeometry args={[20.6, 48]} />
+      <circleGeometry args={[22.2, 64]} />
       <meshStandardMaterial map={texture} roughness={0.92} />
     </mesh>
   );
@@ -81,6 +92,46 @@ function OuterGroundTexture() {
 function GroundTilePatches() {
   // 原构建产物这里生成 42 个五边形铺片；月面贴图接入后该层会破坏地貌连续性。
   return <group />;
+}
+
+function DisabledBackdropMountains() {
+  // 原 `ae()` 会挂载 `assets/models/environment/mountain.png` 远景山体贴片；当前已禁用。
+  return <group />;
+}
+
+function DisabledBackdropClouds() {
+  // 原 `oe()` 会挂载 `cloud1.png` 到 `cloud6.png` 云层贴片；当前已禁用。
+  return <group />;
+}
+
+function DisabledFenceAndBorder() {
+  // 原 `Ze()` 会渲染外围护栏、边框和矮灌木；当前已整体禁用。
+  return <group />;
+}
+
+function DisabledDecorativeTree() {
+  // 原 `$e()` 是中心区域的低模装饰树；月面化后已整体禁用。
+  return <group />;
+}
+
+function DisabledFountainLandmark() {
+  // 原 `He()` 会挂载喷泉模型和涟漪粒子；当前已整体禁用。
+  return <group />;
+}
+
+function DisabledRadioLandmark() {
+  // 原 `We()` 会渲染小电台交互物；当前已整体禁用。
+  return <group />;
+}
+
+function DisabledWorksRing() {
+  // 原 `at()` 会渲染一圈作品立牌；当前已从场景根节点移除。
+  return null;
+}
+
+function DisabledSculptureNodes() {
+  // 原 `ue()` 会渲染一圈雕像节点；当前已从场景根节点移除。
+  return null;
 }
 
 function SceneRoot(props) {
@@ -118,6 +169,11 @@ function DisabledPlayerCartBase() {
   return null;
 }
 
+function HighlightableModelAutoGlow() {
+  // 当前 `Y()` 已从“仅高亮时发光”改为“常亮基础发光 + 激活增强”。
+  return null;
+}
+
 function CircusTentLandmark({ active, onInteract }) {
   return (
     <RigidBody type="fixed" colliders={false} position={[0, 0, -3.8]}>
@@ -128,6 +184,9 @@ function CircusTentLandmark({ active, onInteract }) {
           path="/assets/models/landmarks/circus-tent.glb"
           rotation={[0, Math.PI + Math.PI / 2, 0]}
           scale={15}
+          autoGlowColor="#d8e7ff"
+          autoGlowIntensity={0.52}
+          highlightIntensity={0.92}
         />
       </group>
       {/* 原构建产物在这里额外插入红色 cone 旗帜与 cylinder 旗杆；当前已移除。 */}
@@ -135,7 +194,34 @@ function CircusTentLandmark({ active, onInteract }) {
   );
 }
 
+function PlayerModelAutoGlowNote() {
+  // 当前 `Te()` 会在玩家 `cape-cat.glb` 的材质遍历里注入基础 emissive，默认常亮。
+  return null;
+}
+
 function DisabledGrassField() {
   // 原 `xe()` 会挂载程序化草叶、花和麦穗；月面场景下已整体禁用。
   return null;
 }
+
+function DisabledDecorativeConeClusters() {
+  // 原 `et()` 会在地表摆放三枚彩色 coneGeometry 装饰簇；月面场景下已禁用。
+  return null;
+}
+
+function DisabledOuterBackdropTree() {
+  // 原 `le()` 会在 `BackdropGroundRing` 外圈生成成排低模树；当前已从 `ie()` 挂载点移除。
+  return null;
+}
+
+const weatherProfiles = [
+  {
+    key: "night",
+    label: "墨夜",
+    background: "#05070b",
+    fog: "#0a0d12",
+    ambient: 0.42,
+    sun: 0.38,
+    sunColor: "#7b8aa0",
+  },
+];

@@ -51,6 +51,7 @@ const initialState = () => ({
 });
 
 const state = initialState();
+const initialOverlayCollapsed = true;
 
 const el = {
   body: document.body,
@@ -243,6 +244,11 @@ function renderLog() {
   el.log.innerHTML = state.log.map(item => `<li>${item}</li>`).join("");
 }
 
+function setDashboardCollapsed(collapsed) {
+  el.dashboard.classList.toggle("is-collapsed", collapsed);
+  el.launcher.setAttribute("aria-expanded", String(!collapsed));
+}
+
 function render() {
   const e = state.energy;
   const h = state.habitat;
@@ -271,13 +277,13 @@ function render() {
 }
 
 el.launcher.addEventListener("click", () => {
-  const collapsed = el.dashboard.classList.toggle("is-collapsed");
-  el.launcher.setAttribute("aria-expanded", String(!collapsed));
+  setDashboardCollapsed(!el.dashboard.classList.contains("is-collapsed"));
 });
 el.dockButton.addEventListener("click", confirmDock);
 el.eventButton.addEventListener("click", startEvent);
 el.doorButton.addEventListener("click", openDoors);
 el.resetButton.addEventListener("click", reset);
 
+setDashboardCollapsed(initialOverlayCollapsed);
 render();
 window.setInterval(tickSystem, 1000);
