@@ -104,19 +104,15 @@ function ensureLightingConfig() {
   } catch {
     parsed = null;
   }
-  const next = structuredClone(defaultLighting);
-  if (window.__MY_MOON_LIGHTING__) {
-    Object.keys(defaultLighting).forEach(key => {
-      next[key] = { ...next[key], ...(window.__MY_MOON_LIGHTING__?.[key] ?? {}) };
-    });
-  }
-  if (parsed) {
-    Object.keys(defaultLighting).forEach(key => {
-      next[key] = { ...next[key], ...(parsed?.[key] ?? {}) };
-    });
-  }
+  const next = window.__MY_MOON_LIGHTING__ && typeof window.__MY_MOON_LIGHTING__ === "object"
+    ? window.__MY_MOON_LIGHTING__
+    : structuredClone(defaultLighting);
   Object.keys(defaultLighting).forEach(key => {
-    next[key] = { ...defaultLighting[key], ...next[key] };
+    next[key] = {
+      ...defaultLighting[key],
+      ...(next[key] ?? {}),
+      ...(parsed?.[key] ?? {}),
+    };
   });
   window.__MY_MOON_LIGHTING__ = next;
   return next;

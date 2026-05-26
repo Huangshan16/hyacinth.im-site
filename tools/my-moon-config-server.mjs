@@ -55,7 +55,7 @@ function normalizePosition(value, fallback) {
 
 function normalizeGroup(input, fallback) {
   return {
-    brightness: clampNumber(input?.brightness, fallback.brightness, 0, 2.5),
+    brightness: clampNumber(input?.brightness, fallback.brightness, 0, 8),
     scale: clampNumber(input?.scale, fallback.scale, 0.2, 3),
     surfaceGlow: clampNumber(input?.surfaceGlow, fallback.surfaceGlow, 0, 2),
     activeGlow: clampNumber(input?.activeGlow, fallback.activeGlow ?? fallback.surfaceGlow, 0, 2),
