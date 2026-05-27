@@ -39,6 +39,9 @@ moonSmallModuleScale=1.35
 
 ```bash
 cd /Volumes/SSD/code/hyacinth.im-site
+
+npx http-server . -p 4173 -c-1
+
 python3 -m http.server 4173 --bind 127.0.0.1
 ```
 
