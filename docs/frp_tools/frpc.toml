@@ -1,0 +1,10 @@
+serverAddr = "124.70.111.183"
+serverPort = 7000
+
+# n8n webapp 代理
+[[proxies]]
+name = "mqtt"
+type = "tcp"
+localIP = "127.0.0.1"
+localPort = 4173
+remotePort = 80
